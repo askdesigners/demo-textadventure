@@ -1,0 +1,1 @@
+import Actor from './Actor';
