@@ -1,6 +1,14 @@
 import {buildMap} from '../places/index';
-import actors from '../actors/index';
-import things from '../things/index';
-import actions from '../actions/index';
+import {buildActors} from '../actors/index';
+import {buildThings} from '../things/index';
+import {buildActions} from '../actions/index';
+import Game from './Game';
 
-console.log('in game', buildMap());
+var G = new Game({
+  map: buildMap(),
+  playerName: "Mike",
+  things: buildThings(),
+  actors: buildActors()
+});
+
+export default G;

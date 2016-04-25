@@ -1,3 +1,4 @@
-// import Point from './Point.js';
 import {observable} from "mobx";
-import game from './game/index';
+import G from './game/index';
+
+window.game = G;

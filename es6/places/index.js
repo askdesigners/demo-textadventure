@@ -5,7 +5,6 @@ import descriptions from './placeDescriptions';
 function toNum(sn){
   let nn = Number(sn);
   if (isNaN(nn)) {
-    console.log(sn, nn);
     throw "NaN in making E-W Map";
   }
   return nn;
@@ -23,7 +22,6 @@ function deriveNeighbors(p){
   
   
   if(blockedTo.indexOf('s') !=-1  || scaleUnicode(pos[0]) >= dimensions[1]){
-    console.log('south blocked');
     dirs.toS = false;
   } else {
     dirs.toS = String.fromCharCode(pos[0].charCodeAt() + 1) + pos[1];
@@ -35,7 +33,6 @@ function deriveNeighbors(p){
     dirs.toN = String.fromCharCode(pos[0].charCodeAt() - 1) + pos[1];
   }
   
-  console.log(blockedTo, pos, blockedTo.indexOf('e') !=-1, pos[1] < dimensions[1]);
   if(blockedTo.indexOf('e') !=-1 || pos[1] >= dimensions[0]){
     dirs.toE = false;
   } else {
@@ -48,10 +45,6 @@ function deriveNeighbors(p){
     dirs.toW = pos[0] + (toNum(pos[1])-1);
   }
   return dirs;
-}
-
-function setBlocked(){
-  
 }
 
 export const buildMap = function(){
