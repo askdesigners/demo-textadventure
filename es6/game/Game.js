@@ -15,26 +15,38 @@ class Game {
             .set('syntax', ['go <validDirection:direction>'])
             .set('logic', function(args, valid, result) {
                 if(valid){
-                    console.log('valid', result);
                     self.moveTo(args.direction);
                 } else {
-                    if(result.success){
-                        console.log('partially valid', result);
-                    } else {
-                        console.log(' completely invalid', result);
-                    }
+                    self.rejectInput(result);
                 }
             });
     }
 
-    moveTo(dir) {
-        console.log('moving to: ', dir);
-    }
-
     parseText(text){
-        console.log('parsing: ', text);
         parser.parse(text);
     }
+    
+    moveTo(dir){
+        console.log('moving to: ', dir);
+    }
+    
+    rejectInput(result){
+        if(result.success){
+            console.log('partially valid', result);
+        } else {
+            console.log(' completely invalid', result);
+        }
+    }
+    
+    inspectThing(){}
+
+    pickupThing(){}
+    
+    putDownThing(){}
+    
+    openThing(){}
+    
+    activateThing(){}
 
     save(){
 
