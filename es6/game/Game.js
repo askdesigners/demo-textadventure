@@ -27,7 +27,15 @@ class Game {
     }
     
     moveTo(dir){
-        console.log('moving to: ', dir);
+        console.log('moving to: ', dir, 'from', this.currentPosition);
+        let next = this.map[this.currentPosition].getNeighbor(dir);
+        if(next != false){
+            this.map[this.currentPosition].onLeave();
+            this.currentPosition = next;
+            this.map[next].onEnter();
+        } else {
+            console.log('that way is blocked');
+        }
     }
     
     rejectInput(result){

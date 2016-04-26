@@ -2,8 +2,6 @@ import Parser from './mingy';
 
 var P = new Parser(); 
 
-console.log(P);
-
 P.addValidator('validDirection', function(lexeme) {
 
     var validDirections = ['north','south','east','west','n','s','e','w'];

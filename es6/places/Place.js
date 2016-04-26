@@ -20,7 +20,7 @@ class Place {
     }
     
     describe() {
-        return this.description;
+        return this.description + this.position +' is a scary place.';
     }
     
     canEnter(){
@@ -30,10 +30,21 @@ class Place {
     onEnter(){
         if(this.canEnter()){
             // things can happen!
-            this.describe();
+            return console.log(this.describe());
         } else {
-            return "You can't go that way."
+            return console.log("You can't go that way.");
         }
+    }
+    
+    onLeave(){
+        
+    }
+    
+    getNeighbor(dir){
+        if(dir == 'west' || dir == 'w') return this.toW;
+        if(dir == 'north' || dir == 'n') return this.toN;
+        if(dir == 'south' || dir == 's') return this.toS;
+        if(dir == 'east' || dir == 'e') return this.toE;
     }
 }
 

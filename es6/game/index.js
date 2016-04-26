@@ -8,7 +8,8 @@ var G = new Game({
   map: buildMap(),
   playerName: "Mike",
   things: buildThings(),
-  actors: buildActors()
+  actors: buildActors(),
+  currentPosition: 'a1'
 });
 
 export default G;
