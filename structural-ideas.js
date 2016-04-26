@@ -17,6 +17,8 @@ var player = {
 // this is a lookup map haha of the objects 
 // use "blockedTo" prop to make toX props
 
+// audio should be Diegetic. Ship noise, machines etc, nothing too temporal, but ambient.
+
 var map = {
    a1:{
      description: "you are standing in square a1",

@@ -3,8 +3,49 @@
 <head>
     <meta charset="UTF-8">
     <title>webpack ES6 demo</title>
+    <style>
+        
+        *{
+            box-sizing: border-box;
+        }
+        body{
+            background: lightgrey;
+        }
+        .output{
+            width: 90vw;
+            height: 80vh;
+            padding: 25px;
+            margin: 0 auto;
+            background: white;
+        }
+        .input{
+            width: 90vw;
+            height: 15vh;
+            padding: 25px;
+            margin: 10px auto 0;
+            background: white;
+        }
+        .inputBox{
+            font-size: 20px;
+            width: 50vw;
+            display: inline;
+            padding: 10px;
+        }
+        .send{
+            font-size: 20px;
+            width: 10vw;
+            margin: 0 0 0 5vw;
+            text-align: center;
+            padding: 10px;
+        }
+    </style>
 </head>
 <body>
+    <div class="output"></div>
+    <div class="input">
+        <input type="text" class="inputBox"/>
+        <button class="send">enter</button>
+    </div>
 <script src="bundle.js"></script>
 </body>
 </html>
