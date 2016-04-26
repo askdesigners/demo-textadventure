@@ -24,11 +24,13 @@ class Place {
     }
     
     canEnter(){
+        // can check state for things here
         return true;
     }
     
     onEnter(){
         if(this.canEnter()){
+            // return false or true
             // things can happen!
             return console.log(this.describe());
         } else {
@@ -37,7 +39,7 @@ class Place {
     }
     
     onLeave(){
-        
+        // things can happen!
     }
     
     getNeighbor(dir){
