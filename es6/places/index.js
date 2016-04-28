@@ -56,6 +56,7 @@ export const buildMap = function(){
     map[p.position].toE = toE;
     map[p.position].toS = toS;
     map[p.position].toW = toW;
+    map[p.position].description = descriptions[p.position];
   }
   return map;
 };

@@ -20,7 +20,7 @@ class Place {
     }
     
     describe() {
-        return this.description + this.position +' is a scary place.';
+        return this.description;
     }
     
     canEnter(){
@@ -29,13 +29,17 @@ class Place {
     }
     
     onEnter(){
+        var response = {};
         if(this.canEnter()){
             // return false or true
             // things can happen!
-            return console.log(this.describe());
+            response.message = this.describe();
+            response.success = true;
         } else {
-            return console.log("You can't go that way.");
+            response.message = "You can't go that way.";
+            response.success = false;
         }
+        return response;
     }
     
     onLeave(){

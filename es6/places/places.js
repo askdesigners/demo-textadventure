@@ -4,7 +4,7 @@ export const dimensions = [4,4];
 export const places = [
   {
     position: 'a1',
-    name: '',
+    name: 'A darkened Room',
     descriptiveName: '',
     level: 0,
     blockedTo: ['w','n']

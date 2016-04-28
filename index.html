@@ -10,42 +10,53 @@
         }
         body{
             background: lightgrey;
+            font-family: 'Roboto', sans-serif;
+            font-weight: 300;
+            font-size: 1.2rem;
         }
-        .output{
+        #output{
             width: 90vw;
             height: 80vh;
             padding: 25px;
             margin: 0 auto;
             background: white;
+            overflow-y: scroll;
         }
-        .input{
+        #input{
             width: 90vw;
             height: 15vh;
             padding: 25px;
             margin: 10px auto 0;
             background: white;
         }
-        .inputBox{
+        #inputBox{
             font-size: 20px;
             width: 50vw;
             display: inline;
             padding: 10px;
         }
-        .send{
+        #send{
             font-size: 20px;
             width: 10vw;
             margin: 0 0 0 5vw;
             text-align: center;
             padding: 10px;
         }
+        .request{
+            color: lightsteelblue;
+        }
+        .response{
+            color: black;
+        }
     </style>
+    <link href='https://fonts.googleapis.com/css?family=Roboto:300,700' rel='stylesheet' type='text/css'>
 </head>
 <body>
-    <div class="output"></div>
-    <div class="input">
-        <input type="text" class="inputBox"/>
-        <button class="send">enter</button>
-    </div>
+    <div id="output"></div>
+    <form id="input">
+        <input type="text" id="inputBox"/>
+        <button id="send">enter</button>
+    </form>
 <script src="bundle.js"></script>
 </body>
 </html>

@@ -27,23 +27,33 @@ class Game {
     }
     
     moveTo(dir){
-        console.log('moving to: ', dir, 'from', this.currentPosition);
+        var result = {};
         let next = this.map[this.currentPosition].getNeighbor(dir);
         if(next != false){
-            this.map[this.currentPosition].onLeave();
-            this.currentPosition = next;
-            this.map[next].onEnter();
+            result = this.map[next].onEnter();
+            if(result.success === true){
+                console.log('moving to: ', dir, 'from', this.currentPosition);
+                this.currentPosition = next;
+                this.map[this.currentPosition].onLeave();
+            }
         } else {
-            console.log('that way is blocked');
+            result.success = false;
+            result.message = 'That way is blocked';
         }
+        this.responseHandler(result);
     }
     
     rejectInput(result){
-        if(result.success){
-            console.log('partially valid', result);
-        } else {
-            console.log(' completely invalid', result);
-        }
+        // if(result.success){
+        //     console.log('partially valid', result);
+        // } else {
+        //     console.log(' completely invalid', result);
+        // }
+        this.responseHandler(result);
+    }
+    
+    addResponseHandler(fn){
+        this.responseHandler = fn;
     }
     
     inspectThing(){}
