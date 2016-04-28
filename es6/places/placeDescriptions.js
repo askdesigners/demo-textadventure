@@ -1,6 +1,6 @@
 const descriptions = {
     a1:"The room is cold and dark. Maybe there's a light switch somewhere, but you'll never find it. There's a faint glow to the south.",
-    a2:"It's so dark here you question you'r own existence.",
+    a2:"It's so dark here you question your own existence.",
     a3:"",
     a4:"",
     b1:"A short hallway extends to the east. There are bloody footprints leading that way.",
