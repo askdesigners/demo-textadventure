@@ -54,6 +54,7 @@ class Game {
     
     addResponseHandler(fn){
         this.responseHandler = fn;
+        fn({success: true, message:this.map[this.currentPosition].description});
     }
     
     inspectThing(){}
