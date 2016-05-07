@@ -1,35 +1,54 @@
+import camelize from '../utils/camelize';
+
 class Thing {
 
-    constructor({name, canHold, heldBy, canUse, description, location, situation = 'on',  isLocked = false, useCount = 0, useLimit, consumable = false, hasRequirement = false, requirement}) {
+    constructor({name, canHold, heldBy = null, canUse, description, position, situation = 'on',  isLocked = false, useCount = 0, useLimit = 0, consumable = false, hasRequirement = false, requirement}) {
         this.name = name;
+        this.id = camelize(name);
         this.canHold = canHold;
         this.heldBy = heldBy;
         this.canUse = canUse;
         this.description = description; 
-        this.location = location;
+        this.position = position;
         this.situation = situation;
         this.isLocked = isLocked;
         this.useCount = useCount;
         this.useLimit = useLimit;
         this.consumable = consumable;
         this.hasRequirement = hasRequirement;
-        this.requirement = requirement;
+        this.requirement = hasRequirement ? camelize(requirement) : null;
     }
 
     use(quantity = 1) {
 
     }
 
-    drop(){
+    onDrop(){
 
     }
-
-    pickUp(){
-
+    
+    onPickUp(){
+        var response = {};
+        if(this.canPickUp()){
+            // return false or true
+            // things can happen!
+            response.message = this.inspect();
+            response.success = true;
+        } else {
+            response.message = "You can't pick that up.";
+            response.success = false;
+        }
+        return response;
+    }
+    
+    canPickUp(){
+        return true;
     }
 
     inspect(){
-
+        return this.description;
     }
 
 }
+
+export default Thing;
