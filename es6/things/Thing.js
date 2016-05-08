@@ -2,7 +2,7 @@ import camelize from '../utils/camelize';
 
 class Thing {
 
-    constructor({name, canHold, heldBy = null, canUse, description, position, situation = 'on',  isLocked = false, useCount = 0, useLimit = 0, consumable = false, hasRequirement = false, requirement}) {
+    constructor({name, canHold, heldBy = null, canUse, description, position, situation = 'on', canOpen = false, isLocked = false, useCount = 0, useLimit = 0, consumable = false, hasRequirement = false, requirement}) {
         this.name = name;
         this.id = camelize(name);
         this.canHold = canHold;
@@ -11,6 +11,7 @@ class Thing {
         this.description = description; 
         this.position = position;
         this.situation = situation;
+        this.canOpen = canOpen;
         this.isLocked = isLocked;
         this.useCount = useCount;
         this.useLimit = useLimit;
@@ -20,7 +21,7 @@ class Thing {
     }
 
     use(quantity = 1) {
-
+        this.useCount = this.useCount + quantity;
     }
 
     onDrop(){
@@ -30,8 +31,6 @@ class Thing {
     onPickUp(){
         var response = {};
         if(this.canPickUp()){
-            // return false or true
-            // things can happen!
             response.message = this.inspect();
             response.success = true;
         } else {
@@ -42,6 +41,7 @@ class Thing {
     }
     
     canPickUp(){
+        // if(this.hasRequirement){} and requirent is met
         return true;
     }
 

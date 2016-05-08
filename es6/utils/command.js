@@ -17,84 +17,75 @@ class Command {
     return this
   }
 
-  // if test mode is true, return true if lexemes will trigger this command
-  // if test mode is falsey, execute command logic
-  try(validators, env, lexemes, testMode, system) {
 
-    var args = false,
-      commandResult;
+  returnMatchingCommands(validators, lexemes) {
 
     // try each syntax form
     if (this.syntax) {
       for (var index in this.syntax) {
-
-        var syntaxLexemes = this.syntax[index].split(' ')
-
-        //if (syntaxLexemes.length == lexemes.length) {
-
-        // test submitted lexemes against this syntax
+        var syntaxLexemes = this.syntax[index].split(' ');
         var valid = this.trySyntaxKeywords(syntaxLexemes, lexemes);
-
-        // valid syntax pattern found... now see arg lexemes are proper
+        // valid syntax pattern found... now check that arg lexemes are proper
         if (valid) {
-
-          // if the last syntax lexeme ends with an *, amalgamate execess
-          // submitted lexemes to the submitted lexemes at the same
-          // position as the last syntax lexeme
-          var lastSyntaxLexemeIndex = syntaxLexemes.length - 1
-          if (syntaxLexemes[lastSyntaxLexemeIndex].match(/\*>$/)) {
-
-            lexemes[lastSyntaxLexemeIndex] =
-              lexemes
-                .slice(lastSyntaxLexemeIndex, lexemes.length)
-                .join(' ');
-          }
-
-          // see if the arguments given to the command are valid
-          var result = this.determineCommandArguments(validators, env, syntaxLexemes, lexemes);
-          
-          if (result.success === false) {
-            valid = false;
-          }
+          return { validCommand: true, command: this, syntaxLexemes: syntaxLexemes };
         } else {
-          var result = this.determineCommandArguments(validators, env, syntaxLexemes, lexemes);
+          return null;
         }
-        this.logic(result['args'], valid, result);
       }
     }
   }
 
-  type(object) {
+  testValidators(syntaxLexemes, validators, lexemes) {
+    // assumes valid command
+    // returns: { valid[bool], args }
 
-    return object.constructor.name
+    // if the last syntax lexeme ends with an *, amalgamate execess
+    // submitted lexemes to the submitted lexemes at the same
+    // position as the last syntax lexeme
+    var lastSyntaxLexemeIndex = syntaxLexemes.length - 1
+    if (syntaxLexemes[lastSyntaxLexemeIndex].match(/\*>$/)) {
+
+      lexemes[lastSyntaxLexemeIndex] =
+        lexemes
+          .slice(lastSyntaxLexemeIndex, lexemes.length)
+          .join(' ');
+    }
+
+    // see if the arguments given to the command are valid
+    var result = this.determineCommandArguments(validators, syntaxLexemes, lexemes);
+    return result;
+  }
+
+  type(object) {
+    return object.constructor.name;
   }
 
   trySyntaxKeywords(syntaxLexemes, submittedLexemes) {
 
-    var valid = true
-      , lexemeToTest = 0
-      , secondToLast
+    var valid = true,
+      lexemeToTest = 0,
+      secondToLast;
 
     for (var index in syntaxLexemes) {
 
-      var syntaxLexeme = syntaxLexemes[index]
-      var submittedLexeme = submittedLexemes[lexemeToTest]
+      var syntaxLexeme = syntaxLexemes[index];
+      var submittedLexeme = submittedLexemes[lexemeToTest];
 
       if (!this.caseSensitive) {
         syntaxLexeme = (typeof syntaxLexeme == 'string')
           ? syntaxLexeme.toLowerCase()
-          : syntaxLexeme
+          : syntaxLexeme;
         submittedLexeme = (typeof submittedLexeme == 'string')
           ? submittedLexeme.toLowerCase()
-          : submittedLexeme
+          : submittedLexeme;
       }
 
       // if lexeme doesn't reference an object, test as a keyword
       if (syntaxLexeme[0] != '<' && (syntaxLexeme != submittedLexeme)) {
-        valid = false
+        valid = false;
       }
 
-      lexemeToTest++
+      lexemeToTest++;
     }
 
     secondToLast = syntaxLexemes[index][(syntaxLexemes[index].length - 2)]
@@ -104,25 +95,22 @@ class Command {
     if (secondToLast != '*' && syntaxLexemes.length != submittedLexemes.length) {
       valid = false
     }
-
     return valid
   }
 
   trimArgDelimiters(arg) {
-
     return arg.slice(1, arg.length - 1)
   }
 
-  determineCommandArguments(validators, env, syntaxLexemes, inputLexemes) {
-
-    var lexemeToTest = 0
-
-    var lexemes = inputLexemes
-
-    var referenceData, referenceType, referenceName
-
-    var success = true
-    var arg = {}
+  determineCommandArguments(validators, syntaxLexemes, inputLexemes) {
+    console.log('what is syntax lexemes', validators, syntaxLexemes, inputLexemes)
+    var lexemeToTest = 0,
+      lexemes = inputLexemes,
+      success = true,
+      arg = {},
+      referenceData,
+      referenceType,
+      referenceName;
 
     for (var index in syntaxLexemes) {
 
@@ -146,7 +134,7 @@ class Command {
           // success determines whether validation was successful
           // value allows transformation of the lexeme
           // message allows a message to be passed back???
-          var result = validators[referenceType](lexemes[lexemeToTest], env);
+          var result = validators[referenceType](lexemes[lexemeToTest]);
           if (result.success) {
             arg[referenceName] = (result.value === undefined)
               ? lexemes[lexemeToTest]

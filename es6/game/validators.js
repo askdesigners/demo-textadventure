@@ -2,8 +2,9 @@ import parser from '../utils/parser';
 
 var validators = function (Game) {
   
-  var validThings = [];
+  var wordsToStrip = ['the','to','a','an'];
   var validDirections = ['north', 'south', 'east', 'west', 'n', 's', 'e', 'w'];
+  var validThings = [];
   
   for (var ttt of Object.keys(Game.things.collection)) {
     validThings.push(ttt);
@@ -21,6 +22,12 @@ var validators = function (Game) {
       'success': (validThings.indexOf(lexeme) != -1),
       'message': "That's not thing you can take.\n"
     }
+  });
+  
+  parser.addLexemeTransform(function(lexemes, env){
+    return lexemes.filter( (lex)=>{
+      return wordsToStrip.indexOf(lex) === -1;
+    })
   });
 };
 

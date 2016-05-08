@@ -1,7 +1,7 @@
 import parser from '../utils/parser';
 import commands from './commands';
 import validators from './validators';
-
+ 
 class Game {
 
     constructor({map, currentPosition, playerName, actors, things}) {
@@ -27,7 +27,6 @@ class Game {
     moveTo(dir){
         var result = {};
         let next = this.map[this.currentPosition].getNeighbor(dir);
-        
         if(next != false){
             result = this.map[next].onEnter();
             if(result.success === true){
@@ -95,14 +94,8 @@ class Game {
         this.responseHandler(result);
     }
     
-    rejectInput(result){
-        // if(result.success){
-        //     console.log('partially valid', result);
-        // } else {
-        //     console.log(' completely invalid', result);
-        // }
-        result.valid = false;
-        this.responseHandler(result);
+    noCommandFound(result){
+        this.responseHandler({success: false, valid: false, message: "I don't follow you..."});
     }
     
     addResponseHandler(fn){

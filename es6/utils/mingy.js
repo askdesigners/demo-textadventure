@@ -3,7 +3,7 @@ import Command from './command';
 class Parser {
   
   constructor(commands) {
-    this.loadCommands(commands);
+    this.commands = {};
     this.validators = {};
     this.env = {};
     this.lexemeTransforms = [];
@@ -13,36 +13,8 @@ class Parser {
     this.env[property] = value;
   }
 
-  loadCommands(commands) {
-
-    if (commands) {
-
-      if(commands.constructor.name == 'Array') {
-        this.commands = commands;
-      }
-      else if(commands.constructor.name == 'Object') {
-        this.commands = {};
-
-        for (var name in commands) {
-          this.addCommand(name)
-          .set('syntax', commands[name].syntax)
-          .set('logic', commands[name].logic);
-        }
-      }
-      else {
-
-        throw "Commands given to parser must be an array or hash (object).";
-      }
-    }
-    else {
-
-      this.commands = {};
-    }
-  }
-
   addCommand(name) {
-    // throw error if name already taken
-    var command = new Command('name');
+    var command = new Command(name);
     this.commands[name] = command;
     return command;
   }
@@ -50,83 +22,72 @@ class Parser {
   addValidator(name, logic) {
     this.validators[name] = logic;
   }
+  
+  addFailCatch(logic){
+    this.failCatch = logic;
+  }
 
   addLexemeTransform(logic) {
     this.lexemeTransforms.push(logic);
   }
 
-  parse(input, callback, system) {
+  parse(input) {
     input = this.cleanInput(input);
     var lexemes = input.split(' ');
-    return this.parseLexemes(lexemes, callback, system);
+    return this.parseLexemes(lexemes);
   }
 
   cleanInput(input) {
-
-    // server shell sends extra junk
     input = input.replace("\r\n", "\n");
-
-    // remove trailing newline
     if (input.slice(-1) == "\n") {
       input = input.slice(0, input.length - 1);
     }
-
-    // remove redundant spaces
     while (input.indexOf('  ') != -1) {
       input = input.replace('  ', ' ');
     }
-
     return input;
   }
 
   validCommands(lexemes) {
 
-    var commands = [];
-
+    var matchingCommands = [];
     // cycle through commands looking for syntax match
+    
     for (var index in this.commands) {
       var command = this.commands[index];
       // we clone lexemes because if the last syntax lexeme has a wildcard the
       // submitted lexeme corresponding to the last syntax lexeme ends up
       // getting subsequent submitted lexemes added to it
-      if (command.try(this.validators, this.env, this.clone(lexemes), true)) {
-        commands.push(command);
+      var vettedCommand = command.returnMatchingCommands(this.validators, this.clone(lexemes));
+      if (vettedCommand !== null) {
+        matchingCommands.push(vettedCommand);
       }
     }
-
-    return commands;
+    return matchingCommands;
   }
 
-  parseLexemes(lexemes, callback, system) {
+  parseLexemes(lexemes) {
 
-    var output = '', 
-        result;
-
-    // cycle through plugins
+    // transformations first
     for (var index in this.lexemeTransforms) {
       lexemes = this.lexemeTransforms[index](lexemes, this.env);
     }
 
-    // cycle through commands looking for syntax match
-    var validCommands = this.validCommands(lexemes);
-    
-    for (var index in validCommands) {
-
-      var command = validCommands[index];
-
-      // command condition jazz goes here
-      if (1) {
-
-        system = system || {};
-        system.callback = callback;
-        result = command.try(this.validators, this.env, lexemes, false, system);
-        if (result) {
-          return output + result;
+    var validatedCommands = this.validCommands(lexemes);
+  
+    if(validatedCommands.length > 0){
+      
+      for (var index in validatedCommands) {
+        var command = validatedCommands[index].command;
+        var validatedResults = command.testValidators(validatedCommands[index].syntaxLexemes, this.validators, this.clone(lexemes));
+        if(validatedResults.success){
+          command.success(validatedResults);
+        } else {
+          command.fail(validatedResults);
         }
       }
-      else if(output) {
-        return output;
-      }
+    } else {
+      this.failCatch({success: false, message: "I don't know what you mean..."})
     }
   }
 
