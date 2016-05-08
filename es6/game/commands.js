@@ -6,7 +6,11 @@ var commands = function (Game) {
         .set('syntax', ['go <validDirection:direction>', 'move <validDirection:direction>', 'walk <validDirection:direction>', 'run <validDirection:direction>'])
         .set('success', function (result) {
             console.log('go >>>>', result);
-            Game.moveTo(result.args.direction);
+            if(result.args.direction === 'back'){
+                Game.moveBack();
+            } else {
+                Game.moveTo(result.args.direction);
+            }
         })
         .set('fail', function (result) {
             Game.responseHandler(result);
@@ -32,11 +36,21 @@ var commands = function (Game) {
             Game.responseHandler(result);
         });
 
-    parser.addCommand('look')
-        .set('syntax', ['look <validThing:thing>', 'look at <validThing:thing>', 'look at the <validThing:thing>'])
+    parser.addCommand('lookat')
+        .set('syntax', ['look at <validThing:thing>', 'look at the <validThing:thing>'])
+        .set('success', function (result) {
+            console.log('look at >>>>', result);
+            Game.lookAt(result.args.thing);
+        })
+        .set('fail', function (result) {
+            Game.responseHandler(result);
+        });
+    
+    parser.addCommand('look', 'look around')
+        .set('syntax', ['look'])
         .set('success', function (result) {
             console.log('look >>>>', result);
-            Game.lookAt(result.args.direction);
+            Game.lookAround();
         })
         .set('fail', function (result) {
             Game.responseHandler(result);

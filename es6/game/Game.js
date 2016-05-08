@@ -13,6 +13,8 @@ class Game {
         this.actors = actors;
         this.things = things;
         this.setupParsing();
+        this.moveHistory = ['a1'];
+        this.commandHistory = [];
     }
     
     setupParsing(){
@@ -22,6 +24,7 @@ class Game {
 
     parseText(text){
         parser.parse(text);
+        this.commandHistory.push(text);
     }
     
     moveTo(dir){
@@ -30,8 +33,9 @@ class Game {
         if(next != false){
             result = this.map[next].onEnter();
             if(result.success === true){
-                console.log('moving to: ', dir, 'from', this.currentPosition);
+                console.log('moving ', dir, ' to ' + next + ' from', this.currentPosition);
                 this.currentPosition = next;
+                this.moveHistory.push(this.currentPosition);
                 this.map[this.currentPosition].onLeave();
             }
         } else {
@@ -43,11 +47,15 @@ class Game {
         this.responseHandler(result);
     }
     
+    moveBack(){
+        this.currentPosition = this.moveHistory[this.moveHistory.length - 2];
+        this.moveHistory.push(this.currentPosition);
+    }
+    
     pickupThing(thing){
         var result = {};
         if(this.things.collection[thing].heldBy === null){
-            if(this.things.collection[thing].position === this.currentPosition){
-
+            if(this._thingIsNearby(thing)){
                 if(this.things.collection[thing].canHold != false){
                     result = this.things.collection[thing].onPickUp();
                     if(result.success === true){
@@ -64,7 +72,7 @@ class Game {
                 result.success = false;
                 result.message = "There is no " + thing + " here.";
             }
-        } else if(this.things.collection[thing].heldBy === 'player'){
+        } else if(this._isHeldByplayer(thing)){
             result.success = false;
             result.message = "You are already holding that.";
         } else {
@@ -79,7 +87,7 @@ class Game {
     
     putDownThing(thing){
         var result = {};
-        if(this.things.collection[thing].heldBy === 'player'){
+        if(this._isHeldByplayer(thing)){
             this.things.collection[thing].onDrop();
             this.things.collection[thing].heldBy = null;
             this.things.collection[thing].position = this.currentPosition;
@@ -99,11 +107,40 @@ class Game {
     }
     
     addResponseHandler(fn){
+        var result = {};
         this.responseHandler = fn;
         fn({success: true, message:this.map[this.currentPosition].description});
     }
     
-    inspectThing(){}
+    lookAt(thing){
+        var result = {};
+        if(this._thingIsNearby(thing)){
+            result.success = true;
+            result.message = this.things.collection[thing].inspect();
+        } else {
+            result.success = false;
+            result.message = "There is no " + thing + " here.";
+        }
+        this.responseHandler(result);
+    }
+    
+    lookAround(){
+        var result = {};
+        var thingsHere = this.things.map[this.currentPosition];
+        if(thingsHere !== undefined){
+            var str = "Things in this room: ";
+            
+            for(let thing of thingsHere){
+                str = str + this.things.collection[thing].name + ", "
+            }
+            result.success = true;
+            result.message = str;
+        } else {
+            result.success = false;
+            result.message = "There's nothing here to see really...";
+        }
+        this.responseHandler(result);
+    }
     
     openThing(){}
     
@@ -111,6 +148,14 @@ class Game {
 
     save(){
 
+    }
+    
+    _thingIsNearby(thing){
+        return this.things.collection[thing].position === this.currentPosition;
+    }
+    
+    _isHeldByplayer(thing){
+        return this.things.collection[thing].heldBy === 'player';
     }
 
 }

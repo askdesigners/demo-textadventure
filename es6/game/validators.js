@@ -3,7 +3,7 @@ import parser from '../utils/parser';
 var validators = function (Game) {
   
   var wordsToStrip = ['the','to','a','an'];
-  var validDirections = ['north', 'south', 'east', 'west', 'n', 's', 'e', 'w'];
+  var validDirections = ['north', 'south', 'east', 'west', 'n', 's', 'e', 'w', 'back'];
   var validThings = [];
   
   for (var ttt of Object.keys(Game.things.collection)) {
