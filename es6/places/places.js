@@ -35,14 +35,20 @@ export const places = [
     name: '',
     descriptiveName: '',
     level: 0,
-    blockedTo: ['w','s']
+    blockedTo: ['w','s'],
+    onEnter: (place)=>{
+      console.log('Im fuggin in here!');
+    }
   },
   {
     position: 'b2',
     name: '',
     descriptiveName: '',
     level: 0,
-    blockedTo: ['n','e']
+    blockedTo: ['n','e'],
+    canEnter: (place)=>{
+      return true;
+    }
   },
   {
     position: 'b3',

@@ -2,7 +2,7 @@ import {observable} from "mobx";
 
 class Place {
 
-    constructor({name, descriptiveName, position, description, level=0, blockedTo}) {
+    constructor({name, descriptiveName, position, description, level=0, blockedTo, onEnter = null, onLeave = null, canEnter}) {
         
         // name :               short but readable name
         // descriptiveName :    longer more descriptive name
@@ -10,6 +10,8 @@ class Place {
         // level :              like the floor in a building
         // description :        is read on enter
         // blockedTo :          directions not possible to travel in from here like, ['w','s']
+        // onEnter :            Function to call on enter
+        // onLeave :            Function to call on leave
         
         this.name = name; 
         this.description = description;
@@ -17,6 +19,9 @@ class Place {
         this.position = position; 
         this.level = level;
         this.blockedTo = blockedTo; 
+        this.onEnterAction = onEnter;
+        this.onLeaveAction = onLeave;
+        this.canEnterAction = canEnter;
     }
     
     describe() {
@@ -25,7 +30,12 @@ class Place {
     
     canEnter(){
         // can check state for things here
-        return true;
+        
+        if(typeof this.canEnterAction === 'function') {
+            return this.canEnterAction(this);
+        } else {
+            return true;
+        }
     }
     
     onEnter(){
@@ -35,6 +45,9 @@ class Place {
             // things can happen!
             response.message = this.describe();
             response.success = true;
+            // also pass this the mobx state
+            if(typeof this.onEnterAction === 'function') this.onEnterAction(this);
+            
         } else {
             response.message = "You can't go that way.";
             response.success = false;
@@ -44,6 +57,8 @@ class Place {
     
     onLeave(){
         // things can happen!
+        // also pass this the mobx state
+        if(typeof this.onLeaveAction === 'function') this.onLeaveAction(this);
     }
     
     getNeighbor(dir){

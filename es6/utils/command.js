@@ -103,7 +103,6 @@ class Command {
   }
 
   determineCommandArguments(validators, syntaxLexemes, inputLexemes) {
-    console.log('what is syntax lexemes', validators, syntaxLexemes, inputLexemes)
     var lexemeToTest = 0,
       lexemes = inputLexemes,
       success = true,
