@@ -4,7 +4,8 @@ class Thing {
 
     constructor({name, canHold, heldBy = null, canUse, description, position, situation = 'on', canOpen = false, isLocked = false, useCount = 0, useLimit = 0, consumable = false, hasRequirement = false, requirement}) {
         this.name = name;
-        this.id = camelize(name);
+        // this.id = camelize(name);
+        this.id = name;
         this.canHold = canHold;
         this.heldBy = heldBy;
         this.canUse = canUse;

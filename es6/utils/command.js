@@ -42,14 +42,21 @@ class Command {
     // if the last syntax lexeme ends with an *, amalgamate execess
     // submitted lexemes to the submitted lexemes at the same
     // position as the last syntax lexeme
+    
+    
     var lastSyntaxLexemeIndex = syntaxLexemes.length - 1
     if (syntaxLexemes[lastSyntaxLexemeIndex].match(/\*>$/)) {
-
-      lexemes[lastSyntaxLexemeIndex] =
-        lexemes
-          .slice(lastSyntaxLexemeIndex, lexemes.length)
-          .join(' ');
-    }
+      var joinedLexemes = lexemes.slice(lastSyntaxLexemeIndex, lexemes.length).join(' ');
+      var syntaxPart = lexemes.slice(0, lastSyntaxLexemeIndex);
+      
+      lexemes = [].concat(syntaxPart, joinedLexemes);
+      
+      
+    } else if(syntaxLexemes[lastSyntaxLexemeIndex].match(/\*\d>$/)){
+      
+    } 
+    
+    console.log('testing', syntaxLexemes, validators, lexemes);
 
     // see if the arguments given to the command are valid
     var result = this.determineCommandArguments(validators, syntaxLexemes, lexemes);
@@ -110,7 +117,7 @@ class Command {
       referenceData,
       referenceType,
       referenceName;
-
+      console.log('input', lexemes)
     for (var index in syntaxLexemes) {
 
       var lexeme = syntaxLexemes[index]
@@ -126,8 +133,6 @@ class Command {
           ? referenceData[1]
           : referenceType
         referenceName = referenceName.replace('*','');
-        
-        console.log('referenceName',referenceName)
           
         // if there's a validator, use it to test lexeme
         if (validators[referenceType]) {
