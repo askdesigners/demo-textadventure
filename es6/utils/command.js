@@ -54,9 +54,7 @@ class Command {
       
     } else if(syntaxLexemes[lastSyntaxLexemeIndex].match(/\*\d>$/)){
       
-    } 
-    
-    console.log('testing', syntaxLexemes, validators, lexemes);
+    }
 
     // see if the arguments given to the command are valid
     var result = this.determineCommandArguments(validators, syntaxLexemes, lexemes);
@@ -117,7 +115,7 @@ class Command {
       referenceData,
       referenceType,
       referenceName;
-      console.log('input', lexemes)
+      
     for (var index in syntaxLexemes) {
 
       var lexeme = syntaxLexemes[index]
@@ -130,9 +128,8 @@ class Command {
 
         // trim "<" and ">" from reference to determine reference type
         referenceName = (referenceData[1])
-          ? referenceData[1]
+          ? referenceData[1].replace('*','')
           : referenceType
-        referenceName = referenceName.replace('*','');
           
         // if there's a validator, use it to test lexeme
         if (validators[referenceType]) {

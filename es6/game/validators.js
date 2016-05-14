@@ -18,7 +18,6 @@ var validators = function (Game) {
   });
 
   parser.addValidator('validThing', function (lexeme) {
-    console.log('validThings',validThings);
     return {
       'success': (validThings.indexOf(lexeme) != -1),
       'message': "That's not thing you can take.\n"
