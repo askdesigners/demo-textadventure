@@ -1,20 +1,19 @@
-export const dimensions = [4,4];
+export const dimensions = [4, 4];
 
-// explicit moveTo: {w: 'a5'}
-export const places = [
+export const definitions = [
   {
     position: 'a1',
     name: 'A darkened Room',
     descriptiveName: '',
     level: 0,
-    blockedTo: ['w','n']
+    blockedTo: ['w', 'n']
   },
   {
     position: 'a2',
     name: '',
     descriptiveName: '',
     level: 0,
-    blockedTo: ['e','s']
+    blockedTo: ['e', 's']
   },
   {
     position: 'a3',
@@ -28,15 +27,15 @@ export const places = [
     name: '',
     descriptiveName: '',
     level: 0,
-    blockedTo: ['n','e']
+    blockedTo: ['n', 'e']
   },
   {
     position: 'b1',
     name: '',
     descriptiveName: '',
     level: 0,
-    blockedTo: ['w','s'],
-    onEnter: (place)=>{
+    blockedTo: ['w', 's'],
+    onEnter: (place) => {
       console.log('Im fuggin in here!');
     }
   },
@@ -45,8 +44,8 @@ export const places = [
     name: '',
     descriptiveName: '',
     level: 0,
-    blockedTo: ['n','e'],
-    canEnter: (place)=>{
+    blockedTo: ['n', 'e'],
+    canEnter: (place) => {
       return true;
     }
   },
@@ -55,28 +54,28 @@ export const places = [
     name: '',
     descriptiveName: '',
     level: 0,
-    blockedTo: ['w','e']
+    blockedTo: ['w', 'e']
   },
   {
     position: 'b4',
     name: '',
     descriptiveName: '',
     level: 0,
-    blockedTo: ['w','s','e']
+    blockedTo: ['w', 's', 'e']
   },
   {
     position: 'c1',
     name: '',
     descriptiveName: '',
     level: 0,
-    blockedTo: ['w','n','e']
+    blockedTo: ['w', 'n', 'e']
   },
   {
     position: 'c2',
     name: '',
     descriptiveName: '',
     level: 0,
-    blockedTo: ['w','s']
+    blockedTo: ['w', 's']
   },
   {
     position: 'c3',
@@ -90,34 +89,34 @@ export const places = [
     name: '',
     descriptiveName: '',
     level: 0,
-    blockedTo: ['n','e']
+    blockedTo: ['n', 'e']
   },
   {
     position: 'd1',
     name: '',
     descriptiveName: '',
     level: 0,
-    blockedTo: ['w','s']
+    blockedTo: ['w', 's']
   },
   {
     position: 'd2',
     name: '',
     descriptiveName: '',
     level: 0,
-    blockedTo: ['s','n']
+    blockedTo: ['s', 'n']
   },
   {
     position: 'd3',
     name: '',
     descriptiveName: '',
     level: 0,
-    blockedTo: ['s','n']
+    blockedTo: ['s', 'n']
   },
   {
     position: 'd4',
     name: '',
     descriptiveName: '',
     level: 0,
-    blockedTo: ['s','e']
+    blockedTo: ['s', 'e']
   }
 ];

@@ -1,6 +1,4 @@
 import Place from './Place';
-import {places, dimensions} from './places';
-import descriptions from './placeDescriptions';
 
 function toNum(sn){
   let nn = Number(sn);
@@ -14,11 +12,11 @@ function scaleUnicode(ll){
   return ll.charCodeAt() - 96;
 }
 
-function deriveNeighbors(p){
+function deriveNeighbors(p, dimensions){
   const blockedTo = p.blockedTo;
   const pos = p.position;
   let dirs = {};
-  // grids larger than z will break this...
+  // grids larger than z will break this right now...
   
   
   if(blockedTo.indexOf('s') !=-1  || scaleUnicode(pos[0]) >= dimensions[1]){
@@ -47,16 +45,18 @@ function deriveNeighbors(p){
   return dirs;
 }
 
-export const buildMap = function(){
+export const buildMap = function(placeData){
+  // placeData = {dimensions, definitions, descriptions}
+  console.log(placeData);
   let map = {};
-  for(var p of places){
-    let {toN,toE,toS,toW} = deriveNeighbors(p);
+  for(var p of placeData.definitions){
+    let {toN,toE,toS,toW} = deriveNeighbors(p, placeData.dimensions);
     map[p.position] = new Place(p);
     map[p.position].toN = toN;
     map[p.position].toE = toE;
     map[p.position].toS = toS;
     map[p.position].toW = toW;
-    map[p.position].description = descriptions[p.position];
+    map[p.position].description = placeData.descriptions[p.position]; // ternary
   }
   return map;
 };

@@ -1,9 +1,10 @@
 import Thing from './Thing';
-import {things} from './things';
 
-export const buildThings = function () {
+export const buildThings = function (things) {
     let collection = {};
-    let map = {}; // square : thingName
+    
+    // square : thingName
+    let map = {}; 
     
     for (var t of things) {
         let nT = new Thing(t);

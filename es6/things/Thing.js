@@ -1,4 +1,4 @@
-import camelize from '../utils/camelize';
+// import camelize from '../utils/camelize';
 
 class Thing {
 
@@ -17,7 +17,7 @@ class Thing {
         this.useLimit = useLimit;
         this.consumable = consumable;
         this.hasRequirement = hasRequirement;
-        this.requirement = hasRequirement ? camelize(requirement) : null;
+        this.requirement = hasRequirement ? requirement : null;
     }
 
     use(quantity = 1) {

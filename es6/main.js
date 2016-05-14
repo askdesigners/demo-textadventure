@@ -1,7 +1,16 @@
-import {observable} from "mobx";
+// import {observable} from "mobx";
 import G from './game/index';
+import {dimensions,definitions} from './gameData/places';
+import descriptions from './gameData/placeDescriptions';
+import {things} from './gameData/things';
 
-window.game = G;
+window.game = G({
+  playerName:'Oliver',
+  placesData:{dimensions,descriptions,definitions}, 
+  actorsData:{}, 
+  thingsData:things, 
+  startPosition:'a1' 
+});
 
 var messageList = document.getElementById("output");
 var form = document.getElementById('input');

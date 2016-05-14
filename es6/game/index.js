@@ -4,12 +4,17 @@ import {buildThings} from '../things/index';
 import {buildActions} from '../actions/index';
 import Game from './Game';
 
-var G = new Game({
-  map: buildMap(),
-  playerName: "Mike",
-  things: buildThings(),
-  actors: buildActors(),
-  currentPosition: 'a1'
-});
+var Gameinit = function(gameData){
+  
+  var {placesData, actorsData, thingsData, startPosition, playerName} = gameData;
+  
+  return new Game({
+    playerName: playerName,
+    currentPosition: startPosition,
+    map: buildMap(placesData),
+    things: buildThings(thingsData),
+    actors: buildActors(actorsData)
+  });
+}
 
-export default G;
+export default Gameinit;

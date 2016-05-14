@@ -1,7 +1,8 @@
+import commands from '../gameData/commands';
+import validators from '../gameData/validators';
 import parser from '../utils/parser';
-import commands from './commands';
-import validators from './validators';
 import removeFromArray from '../utils/removeFromArray';
+import listize from '../utils/listize';
  
 class Game {
 
@@ -29,28 +30,15 @@ class Game {
     }
     
     moveTo(dir){
-        var result = {};
         let next = this.map[this.currentPosition].getNeighbor(dir);
-        if(next != false){
-            result = this.map[next].onEnter();
-            if(result.success === true){
-                console.log('moving ', dir, ' to ' + next + ' from', this.currentPosition);
-                this.currentPosition = next;
-                this.moveHistory.push(this.currentPosition);
-                this.map[this.currentPosition].onLeave();
-            }
-        } else {
-            result.success = false;
-            result.message = 'That way is blocked';
-        }
-        
-        result.valid = true;
+        let result = this._handleMove(this.currentPosition, next);
         this.responseHandler(result);
     }
     
     moveBack(){
-        this.currentPosition = this.moveHistory[this.moveHistory.length - 2];
-        this.moveHistory.push(this.currentPosition);
+        let next = this.moveHistory[this.moveHistory.length - 2];
+        let result = this._handleMove(this.currentPosition, next);
+        this.responseHandler(result);
     }
     
     pickupThing(thing){
@@ -134,19 +122,16 @@ class Game {
     
     lookAround(){
         var result = {};
+        result.message = this.map[this.currentPosition].describe();
+        
         var thingsHere = this.things.map[this.currentPosition];
         if(thingsHere !== undefined){
-            var str = "Things in this room: ";
-            
-            for(let thing of thingsHere){
-                str = str + this.things.collection[thing].name + ", "
-            }
-            result.success = true;
-            result.message = str;
+            var str = "<br/> In this room there's " + listize(thingsHere) + '.';
+            result.message += str;
         } else {
-            result.success = false;
             result.message = "There's nothing here to see really...";
         }
+        result.success = true;
         this.responseHandler(result);
     }
     
@@ -164,6 +149,24 @@ class Game {
     
     _isHeldByplayer(thing){
         return this.things.collection[thing].heldBy === 'player';
+    }
+    
+    _handleMove(curPos, nextPos){
+        var result = {};
+        if(nextPos != false){
+            result = this.map[nextPos].onEnter();
+            if(result.success === true){
+                console.log('moving to ' + nextPos + ' from', curPos);
+                this.map[curPos].onLeave();
+                this.currentPosition = nextPos;
+                this.moveHistory.push(this.currentPosition);
+            } 
+        } else {
+            result.success = false;
+            result.message = 'That way is blocked';
+        }
+        result.valid = true;
+        return result;
     }
 
 }
