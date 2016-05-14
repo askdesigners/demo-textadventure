@@ -1,6 +1,7 @@
 import parser from '../utils/parser';
 import commands from './commands';
 import validators from './validators';
+import removeFromArray from '../utils/removeFromArray';
  
 class Game {
 
@@ -63,6 +64,7 @@ class Game {
                         // flag thing obj as held
                         this.things.collection[thing].heldBy = 'player';
                         // add thing to game (or sync with mobx?)
+                        this.things.map[this.currentPosition] = removeFromArray(this.things.map[this.currentPosition], thing);
                     }
                 } else {
                     result.success = false;
@@ -93,6 +95,12 @@ class Game {
             this.things.collection[thing].position = this.currentPosition;
             result.success = true;
             result.message = "You put down the " + thing;
+            if(this.things.map[this.currentPosition] === undefined){
+                this.things.map[this.currentPosition] = [];
+                this.things.map[this.currentPosition].push(thing);
+            } else {
+                this.things.map[this.currentPosition].push(thing);
+            }
         } else {
             result.success = false;
             result.message = "You\'re not holding that.";

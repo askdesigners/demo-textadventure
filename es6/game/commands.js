@@ -27,7 +27,7 @@ var commands = function (Game) {
         });
 
     parser.addCommand('drop')
-        .set('syntax', ['drop <validThing:thing>', 'drop the <validThing:thing>', 'put down <validThing:thing>', 'put down the <validThing:thing>'])
+        .set('syntax', ['drop <validThing:thing*>', 'drop the <validThing:thing*>', 'put down <validThing:thing*>', 'put down the <validThing:thing*>'])
         .set('success', function (result) {
             console.log('drop >>>>', result);
             Game.putDownThing(result.args.thing);
@@ -37,7 +37,7 @@ var commands = function (Game) {
         });
 
     parser.addCommand('lookat')
-        .set('syntax', ['look at <validThing:thing>', 'look at the <validThing:thing>'])
+        .set('syntax', ['look at <validThing:thing*>', 'look at the <validThing:thing*>'])
         .set('success', function (result) {
             console.log('look at >>>>', result);
             Game.lookAt(result.args.thing);
