@@ -17,7 +17,7 @@ var commands = function (Game) {
         });
 
     parser.addCommand('take')
-        .set('syntax', ['take <validThing:thing>', 'take the <validThing:thing>', 'pick up <validThing:thing>', 'pick up the <validThing:thing>'])
+        .set('syntax', ['take <validThing:thing*>', 'take the <validThing:thing*>', 'pick up <validThing:thing*>', 'pick up the <validThing:thing*>'])
         .set('success', function (result) {
             console.log('take >>>>', result);
             Game.pickupThing(result.args.thing);

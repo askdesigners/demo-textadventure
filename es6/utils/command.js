@@ -125,7 +125,10 @@ class Command {
         referenceName = (referenceData[1])
           ? referenceData[1]
           : referenceType
-
+        referenceName = referenceName.replace('*','');
+        
+        console.log('referenceName',referenceName)
+          
         // if there's a validator, use it to test lexeme
         if (validators[referenceType]) {
 

@@ -8,10 +8,6 @@ class Parser {
     this.env = {};
     this.lexemeTransforms = [];
   }
-  
-  setEnv(property, value) {
-    this.env[property] = value;
-  }
 
   addCommand(name) {
     var command = new Command(name);
